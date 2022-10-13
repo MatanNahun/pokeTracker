@@ -9,6 +9,7 @@ def migration():
 
     return
 
+
 def fill_trainers(pokemon_id, owned_by):
     
     for trainer in owned_by:
@@ -26,6 +27,5 @@ def fill_trainers(pokemon_id, owned_by):
                 query = f'INSERT INTO trainers VALUES({pokemon_id}, {trainer["name"]}'
         except:
             print("Failed")
-    
-      
-
+            
+            
