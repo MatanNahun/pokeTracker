@@ -1,5 +1,6 @@
 -- CREATE DATABASE pokeTracker;
 
+
 USE pokeTracker;
 
 -- CREATE TABLE pokemons(
@@ -11,10 +12,8 @@ USE pokeTracker;
 -- );
 
 
-
-
 -- CREATE TABLE trainers(
---    
+   
 --     name VARCHAR(255),
 --     town VARCHAR(255),
 --     PRIMARY KEY (name)
@@ -28,5 +27,5 @@ USE pokeTracker;
 --     PRIMARY KEY (id_pokemon, trainer),
 
 --     FOREIGN KEY(id_pokemon) REFERENCES pokemons(id),
---     FOREIGN KEY(id_trainer) REFERENCES trainers(name)
+--     FOREIGN KEY(trainer) REFERENCES trainers(name)
 -- );
