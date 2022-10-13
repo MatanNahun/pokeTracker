@@ -29,3 +29,7 @@ USE pokeTracker;
 --     FOREIGN KEY(id_pokemon) REFERENCES pokemons(id),
 --     FOREIGN KEY(trainer) REFERENCES trainers(name)
 -- );
+
+
+
+-- SELECT * FROM pokemons_trainers;
