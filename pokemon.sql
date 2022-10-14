@@ -20,16 +20,14 @@ USE pokeTracker;
 -- );
 
 
--- CREATE TABLE pokemons_trainers(
---     id_pokemon INT,
---     trainer VARCHAR(255),
+--CREATE TABLE pokemons_trainers(
+--  id_pokemon INT,
+--  trainer VARCHAR(255),
+--  PRIMARY KEY (id_pokemon, trainer),
 
---     PRIMARY KEY (id_pokemon, trainer),
-
---     FOREIGN KEY(id_pokemon) REFERENCES pokemons(id),
---     FOREIGN KEY(trainer) REFERENCES trainers(name)
+--  FOREIGN KEY(id_pokemon) REFERENCES pokemons(id),
+--  FOREIGN KEY(trainer) REFERENCES trainers(name)
 -- );
-
 
 
 -- SELECT * FROM pokemons_trainers;
