@@ -35,3 +35,11 @@ USE pokeTracker;
 --     FOREIGN KEY(trainer) REFERENCES trainers(name)
 -- );
 
+-- CREATE TABLE pokemon_types(
+--     name VARCHAR(255),
+--     poke_type VARCHAR(255),
+--     PRIMARY KEY(name, poke_type)
+-- );
+INSERT IGNORE INTO pokemon_types VALUES('bulbasaur', 'grass');
+
+-- SELECT * FROM pokemon_types;
