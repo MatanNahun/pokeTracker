@@ -40,6 +40,7 @@ USE pokeTracker;
 --     poke_type VARCHAR(255),
 --     PRIMARY KEY(name, poke_type)
 -- );
-INSERT IGNORE INTO pokemon_types VALUES('bulbasaur', 'grass');
 
--- SELECT * FROM pokemon_types;
+-- INSERT IGNORE INTO pokemon_types VALUES('bulbasaur', 'grass');
+
+SELECT * FROM pokemon_types;
