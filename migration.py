@@ -1,5 +1,8 @@
 import json
 import pymysql
+import requests
+
+from main import insert_poke_types
 
 with open("pokemonDBJson.json") as file:
     data = json.load(file)
@@ -38,7 +41,7 @@ def fill_trainers(pokemon_id, owned_by):
 
 def migration():
     for pokemon in data:
-        sql_insert_to_pokemon_table = f'INSERT INTO pokemons VALUES({pokemon["id"]}, "{pokemon["name"]}", "{pokemon["type"]}", {pokemon["height"]}, {pokemon["weight"]} );'
+        sql_insert_to_pokemon_table = f'INSERT INTO pokemons VALUES({pokemon["id"]}, "{pokemon["name"]}", {pokemon["height"]}, {pokemon["weight"]} );'
         print(sql_insert_to_pokemon_table)
 
         try:
@@ -51,10 +54,22 @@ def migration():
         fill_trainers(pokemon["id"], pokemon["ownedBy"])
 
 
+def update_types():
+    pokemons_query = 'SELECT name FROM pokemons;' 
 
-      
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(pokemons_query)
+            names = cursor.fetchall()
+
+            for item in names:
+                name = item['name']
+                response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{name}')
+                pokemon_types_raw = response.json()["types"]
+                pokemon_types = [pokemon["type"]["name"] for pokemon in pokemon_types_raw]
+                insert_poke_types(name, pokemon_types)
+    except:
+        print("Failed to query pokemon names")  
 
 # migration()
-# a comment i added
-# matan comment i added
-
+# update_types()

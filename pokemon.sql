@@ -6,7 +6,6 @@ USE pokeTracker;
 -- CREATE TABLE pokemons(
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     name VARCHAR(255),
---     type VARCHAR(255),
 --     height INT,
 --     weight INT
 -- );
@@ -18,13 +17,6 @@ USE pokeTracker;
 --     town VARCHAR(255),
 --     PRIMARY KEY (name)
 -- );
-
-
--- CREATE TABLE pokemons_trainers(
---     id_pokemon INT,
---     trainer VARCHAR(255),
---     PRIMARY KEY (id_pokemon, trainer),
-
 
 -- CREATE TABLE pokemons_trainers(
 --     id_pokemon INT,
@@ -41,6 +33,4 @@ USE pokeTracker;
 --     PRIMARY KEY(name, poke_type)
 -- );
 
--- INSERT IGNORE INTO pokemon_types VALUES('bulbasaur', 'grass');
-
-SELECT * FROM pokemon_types;
+select * FROM pokemons_trainers;
