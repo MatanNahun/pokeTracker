@@ -12,7 +12,6 @@ connection = pymysql.connect(
 # if connection.open:
 #     print("the connection is opened")
 
-
 # returns the heaviest pokemon
 def get_heaviest_pokemon():
     try:
@@ -73,6 +72,7 @@ FROM (
 WHERE max_trainers.num = (SELECT MAX(c.trainer_count) FROM (SELECT COUNT(*) AS trainer_count FROM pokemons_trainers GROUP BY id_pokemon) c)
 """
 
+
 def find_max_owned_poke():
     try:
         with connection.cursor() as cursor:
@@ -85,11 +85,13 @@ def find_max_owned_poke():
     except:
         print("Error with getting the max owned pokemon")
 
+
 def insert_poke_types(poke_name, poke_types):
-    
+
     for type in poke_types:
         try:
             with connection.cursor() as cursor:
+
                 query = f'INSERT IGNORE INTO pokemon_types VALUES(\'{poke_name}\', \'{type}\');'
                 cursor.execute(query)
                 connection.commit()
@@ -107,10 +109,6 @@ def get_poke_details(name):
     except:
         print(f'Failed to get the details of {name}')
 
-get_poke_details('bulbasaur')
-    
-    
-    
 
 # get_heaviest_pokemon()
 # findByType("grass")
@@ -118,4 +116,3 @@ get_poke_details('bulbasaur')
 # findRoster("loga")
 
 # find_max_owned_poke()
-
