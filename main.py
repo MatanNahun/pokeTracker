@@ -62,7 +62,36 @@ def findRoster(trainer):
         print("Error with getting all pokemons of this trainer")
 
 
+max_owned_str = """
+SELECT  max_trainers.name
+FROM (
+    SELECT count(*) AS num, pokemons.name
+    FROM pokemons, pokemons_trainers
+    WHERE pokemons.id = pokemons_trainers.id_pokemon 
+    GROUP BY pokemons_trainers.id_pokemon
+) max_trainers
+WHERE max_trainers.num = (SELECT MAX(c.trainer_count) FROM (SELECT COUNT(*) AS trainer_count FROM pokemons_trainers GROUP BY id_pokemon) c)
+"""
+
+def find_max_owned_poke():
+    try:
+        with connection.cursor() as cursor:
+            query = max_owned_str
+            cursor.execute(query)
+            result = cursor.fetchall()
+            pokemonsNames = [pokemon["name"] for pokemon in result]
+            print(pokemonsNames)
+
+    except:
+        print("Error with getting the max owned pokemon")
+
+=======
+
 # get_heaviest_pokemon()
 # findByType("grass")
 # findOwners("gengar")
 # findRoster("loga")
+
+# find_max_owned_poke()
+=======
+
