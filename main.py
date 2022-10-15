@@ -85,7 +85,21 @@ def find_max_owned_poke():
     except:
         print("Error with getting the max owned pokemon")
 
-=======
+def insert_poke_types(poke_name, poke_types):
+    
+    for type in poke_types:
+        try:
+            with connection.cursor() as cursor:
+                query = f'INSERT IGNORE INTO pokemon_types VALUES("{poke_name}", "{type}");'
+                cursor.execute(query)
+                result = cursor.fetchall()
+                print(result)
+        except:
+            print(f'Failed to insert types for {poke_name}')
+    
+    
+    
+    
 
 # get_heaviest_pokemon()
 # findByType("grass")
@@ -93,5 +107,4 @@ def find_max_owned_poke():
 # findRoster("loga")
 
 # find_max_owned_poke()
-=======
 
