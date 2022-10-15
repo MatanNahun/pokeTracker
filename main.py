@@ -91,14 +91,23 @@ def insert_poke_types(poke_name, poke_types):
     for type in poke_types:
         try:
             with connection.cursor() as cursor:
-                query = (
-                    f'INSERT IGNORE INTO pokemon_types VALUES("{poke_name}", "{type}");'
-                )
+
+                query = f'INSERT IGNORE INTO pokemon_types VALUES(\'{poke_name}\', \'{type}\');'
                 cursor.execute(query)
-                result = cursor.fetchall()
-                print(result)
+                connection.commit()
         except:
-            print(f"Failed to insert types for {poke_name}")
+            print(f'Failed to insert types for {poke_name}')
+
+def get_poke_details(name):
+    try:
+        with connection.cursor() as cursor:
+            query = f'SELECT id, name, height, weight FROM pokemons WHERE name = \'{name}\''
+            cursor.execute(query)
+            result = cursor.fetchall()
+            print(result)
+            return result[0]
+    except:
+        print(f'Failed to get the details of {name}')
 
 
 # get_heaviest_pokemon()
