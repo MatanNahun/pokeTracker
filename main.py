@@ -12,7 +12,6 @@ connection = pymysql.connect(
 # if connection.open:
 #     print("the connection is opened")
 
-
 # returns the heaviest pokemon
 def get_heaviest_pokemon():
     try:
@@ -73,6 +72,7 @@ FROM (
 WHERE max_trainers.num = (SELECT MAX(c.trainer_count) FROM (SELECT COUNT(*) AS trainer_count FROM pokemons_trainers GROUP BY id_pokemon) c)
 """
 
+
 def find_max_owned_poke():
     try:
         with connection.cursor() as cursor:
@@ -85,7 +85,6 @@ def find_max_owned_poke():
     except:
         print("Error with getting the max owned pokemon")
 
-=======
 
 # get_heaviest_pokemon()
 # findByType("grass")
@@ -93,5 +92,3 @@ def find_max_owned_poke():
 # findRoster("loga")
 
 # find_max_owned_poke()
-=======
-
