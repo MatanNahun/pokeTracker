@@ -1,5 +1,6 @@
 -- CREATE DATABASE pokeTracker;
 
+
 USE pokeTracker;
 
 -- CREATE TABLE pokemons(
@@ -9,8 +10,6 @@ USE pokeTracker;
 --     height INT,
 --     weight INT
 -- );
-
-
 
 
 -- CREATE TABLE trainers(
@@ -24,11 +23,15 @@ USE pokeTracker;
 -- CREATE TABLE pokemons_trainers(
 --     id_pokemon INT,
 --     trainer VARCHAR(255),
+--     PRIMARY KEY (id_pokemon, trainer),
 
+
+-- CREATE TABLE pokemons_trainers(
+--     id_pokemon INT,
+--     trainer VARCHAR(255),
 --     PRIMARY KEY (id_pokemon, trainer),
 
 --     FOREIGN KEY(id_pokemon) REFERENCES pokemons(id),
 --     FOREIGN KEY(trainer) REFERENCES trainers(name)
 -- );
 
--- SELECT MAX(trainer_count) FROM (SELECT COUNT(*) AS trainer_count FROM pokemons_trainers GROUP BY id_pokemon)

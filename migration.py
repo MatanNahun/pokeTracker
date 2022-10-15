@@ -51,4 +51,10 @@ def migration():
         fill_trainers(pokemon["id"], pokemon["ownedBy"])
 
 
-# migration()         
+
+      
+
+# migration()
+# a comment i added
+# matan comment i added
+
