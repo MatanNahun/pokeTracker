@@ -70,6 +70,7 @@ FROM (
 WHERE max_trainers.num = (SELECT MAX(c.trainer_count) FROM (SELECT COUNT(*) AS trainer_count FROM pokemons_trainers GROUP BY id_pokemon) c)
 """
 
+
 def find_max_owned_poke():
     try:
         with connection.cursor() as cursor:
@@ -82,59 +83,91 @@ def find_max_owned_poke():
     except:
         print("Error with getting the max owned pokemon")
 
+
 def insert_poke_types(poke_name, poke_types):
-    
+
     for type in poke_types:
         try:
             with connection.cursor() as cursor:
-                query = f'INSERT IGNORE INTO pokemon_types VALUES(\'{poke_name}\', \'{type}\');'
+                query = (
+                    f"INSERT IGNORE INTO pokemon_types VALUES('{poke_name}', '{type}');"
+                )
                 cursor.execute(query)
                 connection.commit()
         except:
-            print(f'Failed to insert types for {poke_name}')
+            print(f"Failed to insert types for {poke_name}")
+
 
 def get_poke_details(name):
     try:
         with connection.cursor() as cursor:
-            query = f'SELECT id, name, height, weight FROM pokemons WHERE name = \'{name}\''
+            query = (
+                f"SELECT id, name, height, weight FROM pokemons WHERE name = '{name}';"
+            )
             cursor.execute(query)
             result = cursor.fetchall()
             print(result)
             return result[0]
     except:
-        print(f'Failed to get the details of {name}')
+        print(f"Failed to get the details of {name}")
+
 
 def insert_new_trainer(name, town):
-    
-     try:
-         with connection.cursor() as cursor:
-              query = f'INSERT IGNORE INTO trainers VALUES(\'{name}\', \'{town}\');'
-              cursor.execute(query)
-              connection.commit()
-     except:
-         print(f'Failed to insert the trainer {name}')
+
+    try:
+        with connection.cursor() as cursor:
+            query = f"INSERT IGNORE INTO trainers VALUES('{name}', '{town}');"
+            cursor.execute(query)
+            connection.commit()
+    except:
+        print(f"Failed to insert the trainer {name}")
+
 
 def pokemons_by_type(type):
 
     try:
         with connection.cursor() as cursor:
-            query = f'SELECT name FROM pokemon_types WHERE poke_type = \'{type}\''
+            query = f"SELECT name FROM pokemon_types WHERE poke_type = '{type}';"
             cursor.execute(query)
             result = cursor.fetchall()
             return result
     except:
-        print(f'Failed to get pokemons by type {type}')
+        print(f"Failed to get pokemons by type {type}")
 
 
 def remove_pokemon_ownership(id_pokemon, trainer):
 
     try:
         with connection.cursor() as cursor:
-            query = f'DELETE FROM pokemons_trainers WHERE id_pokemon = \'{id_pokemon}\' AND trainer = \'{trainer}\''
+            query = f"DELETE FROM pokemons_trainers WHERE id_pokemon = '{id_pokemon}' AND trainer = '{trainer}';"
             cursor.execute(query)
             connection.commit()
     except:
-        print(f'failed to remove {trainer}\'s ownership of {id_pokemon}')
+        print(f"failed to remove {trainer}'s ownership of {id_pokemon}")
+
+
+def get_pokemon_id(pokemon_name):
+    try:
+        with connection.cursor() as cursor:
+            query = f'SELECT id FROM pokemons WHERE pokemons.name = "{pokemon_name}";'
+            cursor.execute(query)
+            result = cursor.fetchall()
+            print(result[0]["id"])
+            return result[0]["id"]
+    except:
+        print(f"Failed to get {pokemon_name} id")
+
+
+def evolve(id_pokemon, pokemon_evolved_id, trainer):
+
+    try:
+        with connection.cursor() as cursor:
+            query = f"UPDATE pokemons_trainers SET id_pokemon = {pokemon_evolved_id} WHERE id_pokemon = {id_pokemon} AND trainer = '{trainer}';"
+            cursor.execute(query)
+            connection.commit()
+    except:
+        print(f"failed to remove")
+
 
 # get_heaviest_pokemon()
 # findByType("grass")
@@ -142,3 +175,5 @@ def remove_pokemon_ownership(id_pokemon, trainer):
 # findRoster("loga")
 
 # find_max_owned_poke()
+
+# get_pokemon_id("ditto")
