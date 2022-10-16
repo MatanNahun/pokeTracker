@@ -65,14 +65,24 @@ def delete_pokemon(id_pokemon, trainer):
 
 @app.put("/evolvePokemon/{id_pokemon}/{trainer}")
 def evolve_pokemon(id_pokemon, trainer):
-    response = requests.get(f"https://pokeapi.co/api/v2/evolution-chain/{id_pokemon}")
-    pokemon_evolution_name = response.json()["chain"]["evolves_to"][0]["species"][
-        "name"
-    ]
-    pokemon_evolved_id = get_pokemon_id(pokemon_evolution_name)
-    evolve(id_pokemon, pokemon_evolved_id, trainer)
 
-    return f"hello {pokemon_evolution_name}! "
+    response = requests.get(f"https://pokeapi.co/api/v2/pokemon-species/{id_pokemon}")
+    pokemon_name_to_evolve = response.json()["name"]
+    evolution_chain_url = response.json()["evolution_chain"]["url"]
+    response = requests.get(evolution_chain_url)
+    evolution_chain = response.json()["chain"]
+
+    while True:
+        if pokemon_name_to_evolve == evolution_chain["species"]["name"]:
+            if evolution_chain["evolves_to"] != []:
+                evolved_pokemon_name = evolution_chain["evolves_to"][0]["species"][
+                    "name"
+                ]
+                return evolved_pokemon_name
+            else:
+                return "no more possible evolves"
+
+        evolution_chain = evolution_chain["evolves_to"][0]
 
 
 if __name__ == "__main__":
