@@ -55,7 +55,7 @@ def migration():
 
 
 def update_types():
-    pokemons_query = 'SELECT name FROM pokemons;' 
+    pokemons_query = "SELECT name FROM pokemons;"
 
     try:
         with connection.cursor() as cursor:
@@ -63,13 +63,16 @@ def update_types():
             names = cursor.fetchall()
 
             for item in names:
-                name = item['name']
-                response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{name}')
+                name = item["name"]
+                response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
                 pokemon_types_raw = response.json()["types"]
-                pokemon_types = [pokemon["type"]["name"] for pokemon in pokemon_types_raw]
+                pokemon_types = [
+                    pokemon["type"]["name"] for pokemon in pokemon_types_raw
+                ]
                 insert_poke_types(name, pokemon_types)
     except:
-        print("Failed to query pokemon names")  
+        print("Failed to query pokemon names")
+
 
 # migration()
-# update_types()
+update_types()
