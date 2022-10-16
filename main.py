@@ -166,7 +166,7 @@ def evolve(id_pokemon, pokemon_evolved_id, trainer):
             cursor.execute(query)
             connection.commit()
     except:
-        print(f"failed to remove")
+        print(f"failed to evolve")
 
 
 # get_heaviest_pokemon()
@@ -177,3 +177,4 @@ def evolve(id_pokemon, pokemon_evolved_id, trainer):
 # find_max_owned_poke()
 
 # get_pokemon_id("ditto")
+evolve(5, 6, "Archie")
