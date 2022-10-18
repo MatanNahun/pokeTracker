@@ -1,3 +1,4 @@
+import re
 from tempfile import _TemporaryFileWrapper
 import pymysql
 
@@ -104,12 +105,14 @@ def get_poke_details(name):
             query = (
                 f"SELECT id, name, height, weight FROM pokemons WHERE name = '{name}';"
             )
+
             cursor.execute(query)
             result = cursor.fetchall()
-            print(result)
-            return result[0]
+            if cursor.rowcount is not 0:
+                return result[0]
+
     except:
-        print(f"Failed to get the details of {name}")
+        return f"Failed to get the details of {name}"
 
 
 def insert_new_trainer(name, town):
@@ -119,8 +122,9 @@ def insert_new_trainer(name, town):
             query = f"INSERT IGNORE INTO trainers VALUES('{name}', '{town}');"
             cursor.execute(query)
             connection.commit()
+            return f"Added {name} successfuly"
     except:
-        print(f"Failed to insert the trainer {name}")
+        return f"Failed to insert the trainer {name}"
 
 
 def pokemons_by_type(type):
@@ -142,20 +146,28 @@ def remove_pokemon_ownership(id_pokemon, trainer):
             query = f"DELETE FROM pokemons_trainers WHERE id_pokemon = '{id_pokemon}' AND trainer = '{trainer}';"
             cursor.execute(query)
             connection.commit()
+            if cursor.rowcount == 0:
+                return f"the trainer: {trainer} or the id: {id_pokemon} does not exist"
+            else:
+                return f"the pokemon with id: {id_pokemon} of the trainer {trainer} remmoved succesfully"
+
     except:
-        print(f"failed to remove {trainer}'s ownership of {id_pokemon}")
+        return f"failed to remove {trainer}'s ownership of {id_pokemon}"
 
 
 def get_pokemon_id(pokemon_name):
     try:
         with connection.cursor() as cursor:
             query = f'SELECT id FROM pokemons WHERE pokemons.name = "{pokemon_name}";'
-            cursor.execute(query)
+            row_count = cursor.execute(query)
             result = cursor.fetchall()
-            # print(result[0]["id"])
-            return result[0]["id"]
+            if row_count > 0:
+                # print(result[0]["id"])
+                return result[0]["id"]
+            else:
+                return -1
     except:
-        print(f"Failed to get {pokemon_name} id")
+        return f"Failed to get {pokemon_name} id"
 
 
 def evolve(id_pokemon, pokemon_evolved_id, trainer):
@@ -174,7 +186,7 @@ def evolve(id_pokemon, pokemon_evolved_id, trainer):
             else:
                 raise Exception(print(f"{trainer} does not have the desired pokemon"))
     except:
-        print(f"failed to evolve")
+        return f"failed to evolve"
 
 
 # get_heaviest_pokemon()
