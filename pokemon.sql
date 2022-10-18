@@ -42,5 +42,10 @@ USE pokeTracker;
 
 -- INSERT IGNORE INTO pokemon_types VALUES('bulbasaur', 'grass');
 
--- UPDATE pokemons_trainers SET id_pokemon = 4 WHERE id_pokemon = 6 AND trainer = 'Archie'
+-- UPDATE pokemons_trainers SET id_pokemon = 4 WHERE id_pokemon = 5 AND trainer = 'Archie'
+
+
 SELECT * FROM pokemons_trainers
+
+-- UPDATE pokemons_trainers SET id_pokemon = 5 WHERE id_pokemon = 4 AND trainer = 'Archie';
+-- SELECT COUNT(*) FROM pokemons_trainers WHERE id_pokemon = 4 AND trainer = 'Archie';"

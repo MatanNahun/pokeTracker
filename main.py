@@ -152,7 +152,7 @@ def get_pokemon_id(pokemon_name):
             query = f'SELECT id FROM pokemons WHERE pokemons.name = "{pokemon_name}";'
             cursor.execute(query)
             result = cursor.fetchall()
-            print(result[0]["id"])
+            # print(result[0]["id"])
             return result[0]["id"]
     except:
         print(f"Failed to get {pokemon_name} id")
@@ -162,9 +162,17 @@ def evolve(id_pokemon, pokemon_evolved_id, trainer):
 
     try:
         with connection.cursor() as cursor:
-            query = f"UPDATE pokemons_trainers SET id_pokemon = {pokemon_evolved_id} WHERE id_pokemon = {id_pokemon} AND trainer = '{trainer}';"
-            cursor.execute(query)
-            connection.commit()
+            query_exist = f"SELECT COUNT(*) as count FROM pokemons_trainers WHERE id_pokemon = {id_pokemon} AND trainer = '{trainer}';"
+            cursor.execute(query_exist)
+            result = cursor.fetchall()
+            # print(result[0]["count"])
+
+            if result[0]["count"] != 0:
+                query = f"UPDATE pokemons_trainers SET id_pokemon = {pokemon_evolved_id} WHERE id_pokemon = {id_pokemon} AND trainer = '{trainer}';"
+                cursor.execute(query)
+                connection.commit()
+            else:
+                raise Exception(print(f"{trainer} does not have the desired pokemon"))
     except:
         print(f"failed to evolve")
 

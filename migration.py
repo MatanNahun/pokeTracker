@@ -75,4 +75,4 @@ def update_types():
 
 
 # migration()
-update_types()
+# update_types()

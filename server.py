@@ -81,7 +81,7 @@ def evolve_pokemon(id_pokemon, trainer):
                 evolve(id_pokemon, get_pokemon_id(evolved_pokemon_name), trainer)
                 return f"{pokemon_name_to_evolve} evolved to {evolved_pokemon_name}"
             else:
-                return "no more possible evolves"
+                return "cannot evolve further"
 
         evolution_chain = evolution_chain["evolves_to"][0]
 
