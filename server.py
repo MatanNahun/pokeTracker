@@ -2,6 +2,7 @@ from tkinter.messagebox import NO
 from fastapi import FastAPI
 import requests
 import uvicorn
+from fastapi import FastAPI, HTTPException, Response, status
 
 from main import (
     evolve,
@@ -17,37 +18,29 @@ from main import (
 
 app = FastAPI()
 
-
-# @app.get("/pokemons/{name}")
-# async def get_pokemon(name):
-#     response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
-#     pokemon_types_raw = response.json()["types"]
-#     pokemon_types = [pokemon["type"]["name"] for pokemon in pokemon_types_raw]
-
-#     insert_poke_types(name, pokemon_types)
-#     pokemon_details = get_poke_details(name)
-#     pokemon_details["types"] = pokemon_types
-
-#     return pokemon_details
-
-
 # get trainers by pokemons in query
 @app.get("/trainers")
-def get_trainers_by_pokemon(pokemon):
-    trainers = find_owners(pokemon)
-
-    return trainers
+def get_trainers_by_pokemon(pokemon, response: Response):
+    try:
+        # return find_owners(pokemon)
+        trainers = find_owners(pokemon, response)
+        return trainers
+    except Exception as e:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return e
 
 
 # add trainer by trainer name and town name in query
 @app.post("/trainers")
 def add_trainer(name, town):
-
-    return insert_new_trainer(name, town)
+    try:
+        return insert_new_trainer(name, town)
+    except:
+        raise HTTPException(status_code=404, detail="trainer not found")
 
 
 # get pokemons by trainers or type in query
-@app.get("/pokemons")
+@app.get("/pokemons", status_code=201)
 def get_pokemon_by_type(trainer=None, type=None, name=None):
     if trainer is not None:
         return find_roster(trainer)

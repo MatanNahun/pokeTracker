@@ -1,6 +1,7 @@
 import re
 from tempfile import _TemporaryFileWrapper
 import pymysql
+from fastapi import FastAPI, HTTPException, Response, status
 
 connection = pymysql.connect(
     host="localhost",
@@ -35,16 +36,22 @@ def findByType(type):
         print("Error with getting all pokeon with specific type")
 
 
-def find_owners(pokemon):
+def find_owners(pokemon, response: Response):
     try:
         with connection.cursor() as cursor:
             query = f'SELECT pokemons_trainers.trainer FROM pokemons, pokemons_trainers WHERE pokemons.id = pokemons_trainers.id_pokemon AND pokemons.name = "{pokemon}"'
             cursor.execute(query)
             result = cursor.fetchall()
             trainersNames = [trainer["trainer"] for trainer in result]
-            return trainersNames
-    except:
-        print("Error with getting all trainers of this pokemon")
+            if len(trainersNames) == 0:
+                # return "no owners found..."
+                response.status_code = status.HTTP_400_BAD_REQUEST
+                raise HTTPException(status_code=400, detail="No trainers found...")
+
+            else:
+                return trainersNames
+    except Exception as e:
+        return e
 
 
 def find_roster(trainer):
@@ -108,7 +115,7 @@ def get_poke_details(name):
 
             cursor.execute(query)
             result = cursor.fetchall()
-            if cursor.rowcount is not 0:
+            if cursor.rowcount != 0:
                 return result[0]
 
     except:
@@ -165,9 +172,11 @@ def get_pokemon_id(pokemon_name):
                 # print(result[0]["id"])
                 return result[0]["id"]
             else:
-                return -1
-    except:
-        return f"Failed to get {pokemon_name} id"
+                raise HTTPException(
+                    status_code=404, detail="No such pokemon name in the database"
+                )
+    except TypeError as e:
+        return e
 
 
 def evolve(id_pokemon, pokemon_evolved_id, trainer):
