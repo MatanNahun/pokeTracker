@@ -42,29 +42,33 @@ def add_trainer(name, town):
 # get pokemons by trainers or type in query
 @app.get("/pokemons", status_code=201)
 def get_pokemon_by_type(trainer=None, type=None, name=None):
-    if trainer is not None:
-        return find_roster(trainer)
+    try:
+        if trainer is not None:
+            return find_roster(trainer)
 
-    elif type is not None:
-        return pokemons_by_type(type)
+        elif type is not None:
+            pokemon_types_raw = pokemons_by_type(type)
+            return [pokemon["name"] for pokemon in pokemon_types_raw]
 
-    elif name is not None:
-        try:
-            response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
-            response.raise_for_status()
-        except:
-            return f"{name} does not exist"
-        pokemon_types_raw = response.json()["types"]
-        pokemon_types = [pokemon["type"]["name"] for pokemon in pokemon_types_raw]
+        elif name is not None:
+            try:
+                response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
+                response.raise_for_status()
+            except:
+                return f"{name} does not exist"
+            pokemon_types_raw = response.json()["types"]
+            pokemon_types = [pokemon["type"]["name"] for pokemon in pokemon_types_raw]
 
-        insert_poke_types(name, pokemon_types)
-        pokemon_details = get_poke_details(name)
-        pokemon_details["types"] = pokemon_types
+            insert_poke_types(name, pokemon_types)
+            pokemon_details = get_poke_details(name)
+            pokemon_details["types"] = pokemon_types
 
-        return pokemon_details
+            return pokemon_details
 
-    else:
-        return "requires exactly one parameter"
+        else:
+            return "requires exactly one parameter"
+    except:
+        raise HTTPException(status_code=404, detail="pokemon not found")
 
 
 @app.delete("/pokemons")

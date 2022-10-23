@@ -33,4 +33,6 @@ USE pokeTracker;
 --     PRIMARY KEY(name, poke_type)
 -- );
 
-select * FROM pokemons_trainers;
+-- select * FROM pokemons_trainers;
+
+INSERT INTO pokemons VALUES(132, "yanma", {pokemon["height"]}, {pokemon["weight"]} );
