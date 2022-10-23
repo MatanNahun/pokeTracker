@@ -40,7 +40,7 @@ def test_get_pokemon_by_type_poison():
     assert 'venusaur' in result
 
 
-def test_get_pokemon_by_type_poison():
+def test_get_pokemon_by_type_grass():
     response = client.get("/pokemons?type=grass")
     result = response.json()
     assert response.status_code == 201
