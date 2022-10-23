@@ -140,8 +140,8 @@ def pokemons_by_type(type):
         with connection.cursor() as cursor:
             query = f"SELECT name FROM pokemon_types WHERE poke_type = '{type}';"
             cursor.execute(query)
-            result = cursor.fetchall()
-            return result
+            results = cursor.fetchall()
+            return [result["name"] for result in results]
     except:
         print(f"Failed to get pokemons by type {type}")
 
